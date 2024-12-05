@@ -135,3 +135,5 @@ gcc src/main.c -o build/main
   - `get_next_state()`: Fetches the next state for a given input and current state.
   - `is_final_state()`: Checks if a given state is a final state.
   - `create_transition()`: Allocates memory for a new transition.
+---
+## To contribute view [Contributing Guide](Contributing.md)
