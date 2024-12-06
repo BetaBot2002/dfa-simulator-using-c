@@ -78,6 +78,12 @@ gcc src/main.c -o build/main
 
 2. **Create DFA**:  
    ```
+   ----- DFA Menu -----
+   1. Create DFA
+   2. Test String
+   3. Exit
+   --------------------
+   Enter your choice: 1
    Enter no. of states:
    3
    Enter no. of input alphabets:
@@ -92,18 +98,18 @@ gcc src/main.c -o build/main
    1
    Enter final state 1:
    2
-   Enter transition 1 (current_state input next_state):
-   0 a 1
-   Enter transition 2 (current_state input next_state):
-   0 b 0
-   Enter transition 3 (current_state input next_state):
-   1 a 1
-   Enter transition 4 (current_state input next_state):
-   1 b 2
-   Enter transition 5 (current_state input next_state):
-   2 a 2
-   Enter transition 6 (current_state input next_state):
-   2 b 2
+   Enter Next State for Current State:0 and Input:a:
+   1
+   Enter Next State for Current State:0 and Input:b:
+   0
+   Enter Next State for Current State:1 and Input:a:
+   1
+   Enter Next State for Current State:1 and Input:b:
+   2
+   Enter Next State for Current State:2 and Input:a:
+   2
+   Enter Next State for Current State:2 and Input:b:
+   2
    DFA created successfully!
    ```
 
@@ -116,7 +122,23 @@ gcc src/main.c -o build/main
    --------------------
    Enter your choice: 2
    Enter a string to test: abba
+   delta(Q0, a) -> Q1
+   delta(Q1, b) -> Q2
+   delta(Q2, b) -> Q2
+   delta(Q2, a) -> Q2
    The string is accepted by the DFA.
+
+   ----- DFA Menu -----
+   1. Create DFA
+   2. Test String
+   3. Exit
+   --------------------
+   Enter your choice: 2
+   Enter a string to test: bbb
+   delta(Q0, b) -> Q0
+   delta(Q0, b) -> Q0
+   delta(Q0, b) -> Q0
+   The string is rejected by the DFA.
    ```
 
 ---
@@ -135,5 +157,6 @@ gcc src/main.c -o build/main
   - `get_next_state()`: Fetches the next state for a given input and current state.
   - `is_final_state()`: Checks if a given state is a final state.
   - `create_transition()`: Allocates memory for a new transition.
+  - `display_menu()`: Shows the menu for user to operate.
 ---
 ## To contribute view [Contributing Guide](Contributing.md)
