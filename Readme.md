@@ -53,10 +53,7 @@ gcc src/main.c -o build/main
 2. Enter the size of the input alphabet, followed by each symbol.
 3. Enter the starting state.
 4. Enter the number of final states, followed by each final state.
-5. Define the transitions in the format:  
-   ```
-   current_state input next_state
-   ```
+5. Define the transitions.
 
 ### Test String
 - Input the string to be tested (sequence of characters from the input alphabet).
