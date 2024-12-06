@@ -52,15 +52,44 @@ transition* create_transition(int current_state,int current_input,int next_state
     return new_transition;
 }
 
+void free_transition(transition** transitions,int no_of_transitions){
+    for (int i = 0; i < no_of_transitions; i++){
+        free(transitions[i]);
+    }
+    free(transitions);
+}
+
+void free_dfa(dfa* new_dfa){
+    if (new_dfa->transitions) {
+        int no_of_transitions=new_dfa->no_of_states * new_dfa->no_of_input_alphabets;
+        free_transition(new_dfa->transitions, no_of_transitions);
+    }
+    if (new_dfa->input_alphabet) {
+        free(new_dfa->input_alphabet);
+    }
+    if (new_dfa->final_states) {
+        free(new_dfa->final_states);
+    }
+    free(new_dfa);
+}
+
 dfa* create_dfa() {
     dfa* new_dfa = (dfa*)malloc(sizeof(dfa));
+    if (!new_dfa) {
+        printf("Memory allocation failed.\n");
+        return NULL;
+    }
 
+    new_dfa->transitions = NULL;
+    new_dfa->input_alphabet = NULL;
+    new_dfa->final_states = NULL;
+    
     int no_of_states;
     printf("Enter no. of states:\n");
     scanf("%d", &no_of_states);
     if (no_of_states <= 0) {
         printf("Number of states should be > 0.\n");
-        free(new_dfa);
+        free_dfa(new_dfa);
         return NULL;
     }
     new_dfa->no_of_states = no_of_states;
@@ -70,7 +99,7 @@ dfa* create_dfa() {
     scanf("%d", &no_of_input_alphabets);
     if (no_of_input_alphabets <= 0) {
         printf("Number of input alphabets should be > 0.\n");
-        free(new_dfa);
+        free_dfa(new_dfa);
         return NULL;
     }
     new_dfa->no_of_input_alphabets = no_of_input_alphabets;
@@ -86,7 +115,7 @@ dfa* create_dfa() {
     scanf("%d", &new_dfa->staring_state);
     if (new_dfa->staring_state < 0 || new_dfa->staring_state >= no_of_states) {
         printf("Invalid starting state.\n");
-        free(new_dfa);
+        free_dfa(new_dfa);
         return NULL;
     }
 
@@ -95,7 +124,7 @@ dfa* create_dfa() {
     scanf("%d", &no_of_final_states);
     if (no_of_final_states <= 0) {
         printf("Number of final states should be > 0.\n");
-        free(new_dfa);
+        free_dfa(new_dfa);
         return NULL;
     }
     new_dfa->no_of_final_states = no_of_final_states;
@@ -107,7 +136,7 @@ dfa* create_dfa() {
         scanf("%d", &new_dfa->final_states[i]);
         if (new_dfa->final_states[i] < 0 || new_dfa->final_states[i] >= no_of_states) {
             printf("Invalid final state.\n");
-            free(new_dfa);
+            free_dfa(new_dfa);
             return NULL;
         }
     }
@@ -124,7 +153,7 @@ dfa* create_dfa() {
             scanf("%d", &next_state);
             if (next_state < 0 || next_state >= no_of_states) {
                 printf("Invalid transition states.\n");
-                free(new_dfa);
+                free_dfa(new_dfa);
                 return NULL;
             }
             new_dfa->transitions[i*new_dfa->no_of_input_alphabets+j] = create_transition(current_state, current_input, next_state);
@@ -155,7 +184,7 @@ int main(int argc, char** argv) {
             case 1:
                 if (new_dfa != NULL) {
                     printf("A DFA already exists. Overwriting it...\n");
-                    free(new_dfa);
+                    free_dfa(new_dfa);
                 }
                 new_dfa = create_dfa();
                 if (new_dfa) {
@@ -184,7 +213,7 @@ int main(int argc, char** argv) {
             case 3:
                 printf("Exiting program.\n");
                 if (new_dfa != NULL) {
-                    free(new_dfa);
+                    free_dfa(new_dfa);
                 }
                 exit(0);
 

@@ -155,5 +155,7 @@ gcc src/main.c -o build/main
   - `is_final_state()`: Checks if a given state is a final state.
   - `create_transition()`: Allocates memory for a new transition.
   - `display_menu()`: Shows the menu for user to operate.
+  - `free_dfa()`: Frees all dynamically allocated memory associated with the DFA, including transitions, input alphabet, and final states.
+  - `free_transition()`: Frees memory allocated for the transitions array of the DFA.
 ---
 ## To contribute view [Contributing Guide](Contributing.md)
