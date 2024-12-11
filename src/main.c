@@ -35,10 +35,10 @@ bool is_final_state(dfa* dfa,int current_state){
 }
 
 bool dfa_driver(dfa* dfa,char* input,int current_state){
-    if(input[0]=='\0'){
+    if(*input=='\0'){
         return is_final_state(dfa,current_state);
     }
-    int current_input=input[0];
+    int current_input=*input;
     int next_state=get_next_state(dfa,current_input,current_state);
     printf("delta(Q%d, %c) -> Q%d\n", current_state, current_input, next_state);
     return next_state>=0 && next_state<dfa->no_of_states ? dfa_driver(dfa,++input,next_state) : false;
