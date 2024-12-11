@@ -178,7 +178,11 @@ int main(int argc, char** argv) {
 
     while (1) {
         display_menu();
-        scanf("%d", &choice);
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input. Please enter a number.\n");
+            while (getchar() != '\n');
+            continue;
+        }
 
         switch (choice) {
             case 1:
