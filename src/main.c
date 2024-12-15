@@ -73,6 +73,17 @@ void free_dfa(dfa* new_dfa){
     free(new_dfa);
 }
 
+bool input_final_states(dfa* new_dfa){
+    for (int i = 0; i < new_dfa->no_of_final_states; i++) {
+        printf("Enter final state %d:\n", i + 1);
+        scanf("%d", &new_dfa->final_states[i]);
+        if (new_dfa->final_states[i] < 0 || new_dfa->final_states[i] >= new_dfa->no_of_states) {
+            return false;
+        }
+    }
+    return true;
+}
+
 bool input_transitions(dfa* new_dfa){
     for(int i=0;i<new_dfa->no_of_states;i++){
         int current_state=i;
@@ -149,14 +160,10 @@ dfa* create_dfa() {
 
     new_dfa->final_states = (int*)malloc(no_of_final_states * sizeof(int));
 
-    for (int i = 0; i < no_of_final_states; i++) {
-        printf("Enter final state %d:\n", i + 1);
-        scanf("%d", &new_dfa->final_states[i]);
-        if (new_dfa->final_states[i] < 0 || new_dfa->final_states[i] >= no_of_states) {
-            printf("Invalid final state.\n");
-            free_dfa(new_dfa);
-            return NULL;
-        }
+    if (!input_final_states(new_dfa)) {
+        printf("Invalid final state.\n");
+        free_dfa(new_dfa);
+        return NULL;
     }
 
     int no_of_transitions = no_of_input_alphabets*no_of_states;
