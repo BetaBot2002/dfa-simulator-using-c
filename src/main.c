@@ -54,7 +54,7 @@ transition* create_transition(int current_state,int current_input,int next_state
 
 void free_transition(transition** transitions,int no_of_transitions){
     for (int i = 0; i < no_of_transitions; i++){
-        free(transitions[i]);
+        if(transitions[i]) (transitions[i]);
     }
     free(transitions);
 }
@@ -71,6 +71,24 @@ void free_dfa(dfa* new_dfa){
         free(new_dfa->final_states);
     }
     free(new_dfa);
+}
+
+bool input_transitions(dfa* new_dfa){
+    for(int i=0;i<new_dfa->no_of_states;i++){
+        int current_state=i;
+        for(int j=0;j<new_dfa->no_of_input_alphabets;j++){
+            new_dfa->transitions[i*new_dfa->no_of_input_alphabets+j]=NULL;
+            char current_input=new_dfa->input_alphabet[j];
+            int next_state;
+            printf("Enter Next State for Current State:%d and Input:%c:\n", current_state,current_input);
+            scanf("%d", &next_state);
+            if (next_state < 0 || next_state >= new_dfa->no_of_states) {
+                return false;
+            }
+            new_dfa->transitions[i*new_dfa->no_of_input_alphabets+j] = create_transition(current_state, current_input, next_state);
+        }
+    }
+    return true;
 }
 
 dfa* create_dfa() {
@@ -140,24 +158,14 @@ dfa* create_dfa() {
             return NULL;
         }
     }
-    int no_of_transitions = no_of_input_alphabets*no_of_states;
 
+    int no_of_transitions = no_of_input_alphabets*no_of_states;
     new_dfa->transitions = (transition**)malloc(no_of_transitions * sizeof(transition*));
 
-    for(int i=0;i<new_dfa->no_of_states;i++){
-        int current_state=i;
-        for(int j=0;j<new_dfa->no_of_input_alphabets;j++){
-            char current_input=new_dfa->input_alphabet[j];
-            int next_state;
-            printf("Enter Next State for Current State:%d and Input:%c:\n", current_state,current_input);
-            scanf("%d", &next_state);
-            if (next_state < 0 || next_state >= no_of_states) {
-                printf("Invalid transition states.\n");
-                free_dfa(new_dfa);
-                return NULL;
-            }
-            new_dfa->transitions[i*new_dfa->no_of_input_alphabets+j] = create_transition(current_state, current_input, next_state);
-        }
+    if (!input_transitions(new_dfa)) {
+        printf("Invalid transition states.\n");
+        free_dfa(new_dfa);
+        return NULL;
     }
 
     return new_dfa;
