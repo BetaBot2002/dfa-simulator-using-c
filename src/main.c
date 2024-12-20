@@ -13,7 +13,7 @@ typedef struct dfa{
     int no_of_states;
     char* input_alphabet;
     transition** transitions;
-    int staring_state;
+    int starting_state;
     int* final_states;
     int no_of_final_states;
     int no_of_input_alphabets;
@@ -103,6 +103,15 @@ bool input_input_alphabet(dfa* new_dfa){
     return true;
 }
 
+bool input_starting_state(dfa* new_dfa){
+    int starting_state;
+    printf("Enter starting state (Q0 to Q%d):\nQ", new_dfa->no_of_states - 1);
+    scanf("%d", &starting_state);
+    if (starting_state < 0 || starting_state >= new_dfa->no_of_states) return false;
+    new_dfa->starting_state=starting_state;
+    return true;
+}
+
 bool input_final_states(dfa* new_dfa){
     for (int i = 0; i < new_dfa->no_of_final_states; i++) {
         printf("Enter final state %d:\n", i + 1);
@@ -162,9 +171,7 @@ dfa* create_dfa() {
         return NULL;
     }
 
-    printf("Enter starting state (0 to %d):\n", new_dfa->no_of_states - 1);
-    scanf("%d", &new_dfa->staring_state);
-    if (new_dfa->staring_state < 0 || new_dfa->staring_state >= new_dfa->no_of_states) {
+    if (!input_starting_state(new_dfa)) {
         printf("Invalid starting state.\n");
         free_dfa(new_dfa);
         return NULL;
@@ -242,7 +249,7 @@ int main(int argc, char** argv) {
                     char input[100];
                     printf("Enter a string to test: ");
                     scanf("%s", input);
-                    bool result = dfa_driver(new_dfa, input, new_dfa->staring_state);
+                    bool result = dfa_driver(new_dfa, input, new_dfa->starting_state);
                     if (result) {
                         printf("The string is accepted by the DFA.\n");
                     } else {
