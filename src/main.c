@@ -83,6 +83,15 @@ bool input_no_of_states(dfa* new_dfa){
     return true;
 }
 
+bool input_no_of_input_alphabets(dfa* new_dfa){
+    int no_of_input_alphabets;
+    printf("Enter no. of input alphabets:\n");
+    scanf("%d", &no_of_input_alphabets);
+    if (no_of_input_alphabets <= 0) return false;
+    new_dfa->no_of_input_alphabets = no_of_input_alphabets;
+    return true;
+}
+
 bool input_input_alphabet(dfa* new_dfa){
     for (int i = 0; i < new_dfa->no_of_input_alphabets; i++) {
         char temp;
@@ -140,17 +149,13 @@ dfa* create_dfa() {
         return NULL;
     }
 
-    int no_of_input_alphabets;
-    printf("Enter no. of input alphabets:\n");
-    scanf("%d", &no_of_input_alphabets);
-    if (no_of_input_alphabets <= 0) {
+    if (!input_no_of_input_alphabets(new_dfa)) {
         printf("Number of input alphabets should be > 0.\n");
         free_dfa(new_dfa);
         return NULL;
     }
-    new_dfa->no_of_input_alphabets = no_of_input_alphabets;
 
-    new_dfa->input_alphabet = (char*)malloc(no_of_input_alphabets * sizeof(char));
+    new_dfa->input_alphabet = (char*)malloc(new_dfa->no_of_input_alphabets * sizeof(char));
     if(!input_input_alphabet(new_dfa)){
         printf("Input only alphanumeric character.\n");
         free_dfa(new_dfa);
