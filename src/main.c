@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdbool.h>
 #include<stdlib.h>
+#include<ctype.h>
 
 typedef struct transition{
     int current_state;
@@ -73,6 +74,17 @@ void free_dfa(dfa* new_dfa){
     free(new_dfa);
 }
 
+bool input_input_alphabet(dfa* new_dfa){
+    for (int i = 0; i < new_dfa->no_of_input_alphabets; i++) {
+        char temp;
+        printf("Enter symbol %d:\n", i + 1);
+        scanf(" %c", &temp);
+        if(!isalnum(temp)) return false;
+        new_dfa->input_alphabet[i]=temp;
+    }
+    return true;
+}
+
 bool input_final_states(dfa* new_dfa){
     for (int i = 0; i < new_dfa->no_of_final_states; i++) {
         printf("Enter final state %d:\n", i + 1);
@@ -134,10 +146,10 @@ dfa* create_dfa() {
     new_dfa->no_of_input_alphabets = no_of_input_alphabets;
 
     new_dfa->input_alphabet = (char*)malloc(no_of_input_alphabets * sizeof(char));
-
-    for (int i = 0; i < no_of_input_alphabets; i++) {
-        printf("Enter symbol %d:\n", i + 1);
-        scanf(" %c", &new_dfa->input_alphabet[i]);
+    if(!input_input_alphabet(new_dfa)){
+        printf("Input only alphanumeric character.\n");
+        free_dfa(new_dfa);
+        return NULL;
     }
 
     printf("Enter starting state (0 to %d):\n", no_of_states - 1);
